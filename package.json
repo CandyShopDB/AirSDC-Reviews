@@ -1,0 +1,60 @@
+{
+  "name": "anoop-reviews",
+  "version": "1.0.0",
+  "description": "**Nappbnb**",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "jest",
+    "react-dev": "webpack -d --watch",
+    "dev-server": "nodemon server/index.js",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "benchmark": "^2.1.4",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.1.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "nodemon": "^1.17.5",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CandyShopDB/anoop-reviews.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CandyShopDB/anoop-reviews/issues"
+  },
+  "homepage": "https://github.com/CandyShopDB/anoop-reviews#readme"
+}

@@ -1,0 +1,122 @@
+.rates-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+
+
+.rates-column {
+  padding-left: 8px;
+  padding-right: 8px;
+  min-height: 1px;
+  display: flex;
+  width: 50%;
+  margin-left: -8px;
+  margin-right: -8px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rate-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.rate-label {
+  border: 0;
+  color: inherit;
+  outline: none;
+  background-color: white;
+  position: relative;
+  padding-left: 8px;
+  padding-right: 8px;
+  min-height: 1px;
+  cursor: pointer;
+  width: 60%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  -webkit-transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.rate-label::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  box-shadow: 0 5px 12px #888888;
+  -webkit-transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.rate-label::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  box-shadow: 0 0px 12px #888888;
+}
+
+.rate-label:hover {
+  -webkit-transform: translate(-2px, -3px);
+  transform: translate(-2px, -3px);
+}
+
+.rate-label:hover::after {
+  opacity: 1;
+}
+
+.rate-label:active::after {
+  opacity: 0;
+}
+
+.rate-label:active::before {
+  opacity: 1;
+}
+
+.rate-label span {
+  font-size: 16px;
+  display: inline-block;
+}
+
+.rate-label span:hover {
+  color: #008489;
+  text-decoration: underline;
+}
+
+.rate-star {
+  padding-left: 8px;
+  padding-right: 8px;
+  min-height: 1px;
+  width: 40%;
+  text-align: right;
+
+}
+
+.room-rating span{
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  margin-right: 6px;
+}
+
+@media only screen and (max-width: 744px) {
+  .rates-list {
+    flex-direction: column;
+  }
+
+  .rates-column {
+    width: 100%;
+  }
+}
