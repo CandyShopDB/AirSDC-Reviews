@@ -56,4 +56,33 @@ router.post('/:roomId', async (req, res, next) => {
   }
 });
 
+// Everything below this is ANOOP'S SDC MODIFICATIONS
+router.put('/:roomId', async (req, res, next) => {
+  try {
+    let { roomId } = req.params;
+    roomId += roomIdAdjustment;
+    const queryObj = { roomId };
+    Object.assign(queryObj, req.body);
+    const variable1 = db['PUT METHOD NAME HERE'](queryObj);
+    await variable1;
+    res.status(200);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete('/:roomId', async (req, res, next) => {
+  try {
+    let { roomId } = req.params;
+    roomId += roomIdAdjustment;
+    const queryObj = { roomId };
+    Object.assign(queryObj, req.body);
+    const variable2 = db['DELETE METHOD NAME HERE'](queryObj);
+    await variable2;
+    res.status(200);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
