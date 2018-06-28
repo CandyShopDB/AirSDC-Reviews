@@ -1,6 +1,7 @@
 const express = require('express');
 const tempStorage = require('./tempStorage');
-const db = require('../database/index');
+// const db = require('../database/index');
+const db = require('../database/indexSDC');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ const getQueryParams = ({ pageonly, start, limit }) => {
 router.get('/:roomId', async (req, res, next) => {
   try {
     let { roomId } = req.params;
-    roomId = parseInt(roomId, 10) + roomIdAdjustment;
+    roomId = parseInt(roomId, 10);
     if (
       !parseInt(req.query.pageonly, 10)
       || !(tempStorage.roomInfo.id
@@ -34,6 +35,7 @@ router.get('/:roomId', async (req, res, next) => {
       tempStorage.roomInfo.id -= roomIdAdjustment;
       tempStorage.totalNumberResults = tempStorage.allQueryReviews.length;
     }
+    console.log(getQueryParams(req.query));
     res.status(200).json(getQueryParams(req.query));
   } catch (err) {
     next(err);

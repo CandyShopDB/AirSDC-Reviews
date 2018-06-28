@@ -9,7 +9,7 @@ CREATE TABLE reviews (
   userId INT NOT NULL,
   roomId INT NOT NULL,
   text VARCHAR(1000) NULL,
-  date VARCHAR(100) NOT NULL,
+  date DATE NOT NULL,
   accuracy INT NOT NULL,
   communication INT NOT NULL,
   cleanliness INT NOT NULL,

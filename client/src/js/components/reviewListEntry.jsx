@@ -30,6 +30,7 @@ class ReviewListEntry extends React.Component {
 
 
   render() {
+    console.log(this.props.review);
     return (
       <div className="review-list-entry">
         <div className="user-profile">

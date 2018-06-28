@@ -66,16 +66,16 @@ const generateReviewsTable = () => {
         let photoUrls = '';
         for (let h = 0; h < generateRandomInt(0, 4); h++) {
           photoUrls += `https://s3-us-west-1.amazonaws.com/fec-photos/photo${generateRandomInt(1001, 1315)}.jpeg|`;
-        }
-        let reporterId = null;
-        let reason = null;
-        let comments = null;
-        for (let m = 0; m < generateRandomInt(0, 1); m++) {
-          reporterId = generateRandomInt(1, roomTotal * 3);
-          reason = generateRandomInt(1, 3);
-          comments = faker.lorem.paragraph();
-        }
-        storageStr += `${userId},${username},${avatar},${roomId},${text},${date},${accuracy},${communication},${cleanliness},${location},${checkIn},${value},${photoUrls},${reporterId},${reason},${comments}\r\n`;
+        };
+        // let reporterId = null;
+        // let reason = null;
+        // let comments = null;
+        // for (let m = 0; m < generateRandomInt(0, 1); m++) {
+        //   reporterId = generateRandomInt(1, roomTotal * 3);
+        //   reason = generateRandomInt(1, 3);
+        //   comments = faker.lorem.paragraph();
+        // }
+        storageStr += `${userId},${username},${avatar},${roomId},${text},${date},${accuracy},${communication},${cleanliness},${location},${checkIn},${value},${photoUrls}\r\n`;
       }
       if (i === roomTotal) {
         reviewsFile.write(storageStr);
@@ -93,79 +93,3 @@ const generateReviewsTable = () => {
 
 console.time(`${roomTotal * 10}_reviews`);
 generateReviewsTable();
-
-
-// console.time(`${roomTotal}_rooms`);
-// let roomCounter = 0;
-// const roomOuterLoopNum = roomTotal / 100;
-// for (let i = 0; i < roomOuterLoopNum; i++) {
-//   if (i === roomOuterLoopNum * 0.25) {
-//     console.log('1 Quarter there!');
-//   } else if (i === roomOuterLoopNum * 0.5) {
-//     console.log('Halfway there!');
-//   } else if (i === roomOuterLoopNum * 0.75) {
-//     console.log('3 Quarter there!');
-//   }
-//   let storageStr = '';
-//   for (let j = 0; j < 100; j++) {
-//     const roomId = i;
-//     const roomname = `Private ${generateRandomInt(1, 5)} Bedroom ${faker.commerce.productAdjective()} House Available!`;
-//     const roomAddress = `${faker.address.streetAddress(true)}. ${faker.address.city()}. ${faker.address.stateAbbr()} ${faker.address.zipCode()}`;
-//     const hostId = generateRandomInt(1, roomTotal * 3);
-//     storageStr += `${roomId},${roomname},${roomAddress},${hostId},,,,,,,\r\n`;
-//     roomCounter += 1;
-//   }
-//   roomsFile.write(storageStr);
-// }
-// console.timeEnd(`${roomTotal}_rooms`);
-
-// const monthOptions = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-
-// // Generate Reviews Documents
-// console.time(`${roomTotal * 10}_reviews`);
-// const reviewsFile = fs.createWriteStream(path.join(__dirname, './dataCouch/reviews.csv'));
-// reviewsFile.write('userId,username,avatar,roomId,text,date,accuracy,communication,cleanliness,location,checkIn,value,photoUrls,reporterId,reason,comments\r\n');
-// let counter = 1;
-// const outerLoopNum = roomTotal;
-// for (let i = 0; i < outerLoopNum; i++) {
-//   if (i === outerLoopNum * 0.25) {
-//     console.log('1 Quarter there!');
-//   } else if (i === outerLoopNum * 0.5) {
-//     console.log('Halfway there!');
-//   } else if (i === outerLoopNum * 0.75) {
-//     console.log('3 Quarter there!');
-//   }
-//   let storageStr = '';
-//   for (let j = 0; j < 1; j++) {
-//     for (let k = 0; k < generateRandomInt(8, 12); k++) {
-//       const userId = generateRandomInt(1, roomTotal * 3);
-//       const username = faker.name.findName();
-//       const avatar = faker.image.avatar();
-//       const roomId = counter;
-//       const text = faker.lorem.paragraph();
-//       const date = `${generateRandomInt(2008, 2018)}-${monthOptions[generateRandomInt(0, 11)]}-${generateRandomInt(1, 30)}`;
-//       const accuracy = generateRandomInt(1, 5);
-//       const communication = generateRandomInt(1, 5);
-//       const cleanliness = generateRandomInt(1, 5);
-//       const location = generateRandomInt(1, 5);
-//       const checkIn = generateRandomInt(1, 5);
-//       const value = generateRandomInt(1, 5);
-//       let photoUrls = '';
-//       for (let h = 0; h < generateRandomInt(0, 4); h++) {
-//         photoUrls += `https://s3-us-west-1.amazonaws.com/fec-photos/photo${generateRandomInt(1001, 1315)}.jpeg|`;
-//       }
-//       let reporterId = null;
-//       let reason = null;
-//       let comments = null;
-//       for (let m = 0; m < generateRandomInt(0, 1); m++) {
-//         reporterId = generateRandomInt(1, roomTotal * 3);
-//         reason = generateRandomInt(1, 3);
-//         comments = faker.lorem.paragraph();
-//       }
-//       storageStr += `${userId},${username},${avatar},${roomId},${text},${date},${accuracy},${communication},${cleanliness},${location},${checkIn},${value},${photoUrls},${reporterId},${reason},${comments}\r\n`;
-//     }
-//     counter += 1;
-//   }
-//   reviewsFile.write(storageStr);
-// }
-// console.timeEnd(`${roomTotal * 10}_reviews`);
