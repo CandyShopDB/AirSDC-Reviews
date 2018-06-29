@@ -245,6 +245,7 @@ export const makeStarElements = (
   const numFullStar = Math.floor(rate);
   const numHalfStar = (rate - numFullStar) > 0 ? 1 : 0;
   const numZeroStar = fullStar - numFullStar - numHalfStar;
+  console.log(numFullStar, numHalfStar, numZeroStar, '-------------------->');
   return (
     <span className={containerClass}>
       {

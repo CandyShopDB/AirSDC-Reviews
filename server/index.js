@@ -1,3 +1,4 @@
+const newRelic = require('newrelic');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -9,7 +10,7 @@ const reviewsRoute = require('./reviews');
 const app = express();
 
 // use morgan to log incoming reuests
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 // use body-parser to parse the request bodies
 app.use(bodyParser.json());
@@ -35,7 +36,7 @@ app.use((req, res, next) => {
 /* eslint-enable consistent-return */
 
 // serve up the pages
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/:roomId', express.static(path.join(__dirname, '../public')));
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 // handle /reviews routes

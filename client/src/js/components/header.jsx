@@ -94,7 +94,7 @@ class Header extends React.Component {
             className="aggregate-rating"
             onClick={this.handleRatingClick}
           >
-            <div className="total-rate-star">{makeStarElements(this.props.overallRating / 5, 5, starClassNames)}</div>
+            <div className="total-rate-star">{makeStarElements(4 / 5, 5, starClassNames)}</div>
             <span className="chevron-icon">{this.chevronIcon()}</span>
           </button>
         </h4>
