@@ -1,4 +1,3 @@
-// const request = require('supertest');
 const request = require('request');
 const server = require('../server/index');
 const db = require('../database/indexSDC');
