@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.11.1
+      - image: circleci/postgres:10.4
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm test

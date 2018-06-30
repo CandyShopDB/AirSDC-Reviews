@@ -1,6 +1,5 @@
 const express = require('express');
 const tempStorage = require('./tempStorage');
-// const db = require('../database/index');
 const db = require('../database/indexSDC');
 
 const router = express.Router();
@@ -41,32 +40,14 @@ router.get('/:roomId', async (req, res, next) => {
   }
 });
 
-
-// router.post('/:roomId', async (req, res, next) => {
-//   try {
-//     let { roomId } = req.params;
-//     roomId += roomIdAdjustment;
-//     const queryObj = { roomId };
-//     Object.assign(queryObj, req.body);
-//     const reviews = db.queryReviewsByRoomId(queryObj);
-//     tempStorage.allQueryReviews = await reviews;
-//     tempStorage.totalNumberResults = tempStorage.allQueryReviews.length;
-//     res.status(200).json(getQueryParams(req.query));
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// Everything below this is ANOOP'S SDC MODIFICATIONS
 router.post('/:roomId', async (req, res, next) => {
   try {
-    console.log(req.params);
     let roomId = parseInt(req.params.roomId);
     roomId += roomIdAdjustment;
     let queryObj = { roomId };
     Object.assign(queryObj, req.body);
     await db.addReview(queryObj);
-    res.sendStatus(200);
+    res.sendStatus(201);
   } catch (err) {
     next(err);
   }

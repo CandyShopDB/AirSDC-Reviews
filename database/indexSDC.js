@@ -1,14 +1,23 @@
-const { Client } = require('pg');
+const { Pool, Client } = require('pg');
 const config = require('./config');
-const db = new Client(config);
-db.connect()
+
+// const pool = new Pool(config);
+const client = new Client(config);
+
+// pool.on('error', (err, client) => {
+//   console.error('Unexpected error on idle client: ', err);
+//   process.exit(-1);
+// });
+
+client.connect()
   .then(() => console.log('Connected to the PostgreSQL db'))
   .catch(err => console.log(err));
 
 
 const queryRoomInfoByRoomId = async (roomId) => {
   try {
-    const data = await db.query('SELECT * FROM rooms WHERE id = $1;', [roomId]);
+    // const client = await pool.connect();
+    const data = await client.query('SELECT * FROM rooms WHERE id = $1;', [roomId]);
     const result = data.rows[0];
     result.roomName = result.roomname;
     result.roomAddress = result.roomaddress;
@@ -20,6 +29,7 @@ const queryRoomInfoByRoomId = async (roomId) => {
     result.location = result.totallocation;
     result.checkIn = result.totalcheckin;
     result.value = result.totalvalue;
+    // client.release();
     return Object.assign({}, result);
   } catch (err) {
     throw new Error(`query room info error: ${err.message}`);
@@ -37,7 +47,7 @@ const queryReviewsByRoomId = async (queryObj) => {
   }
   queryStr += 'date DESC;';
   try {
-    const data = await db.query(queryStr, [queryObj.roomId]);
+    const data = await client.query(queryStr, [queryObj.roomId]);
     return data.rows.map((row) => {
       row.userName = row.username;
       row.aggregateRate = row.aggregaterate;
@@ -51,7 +61,7 @@ const queryReviewsByRoomId = async (queryObj) => {
 const addReview = async (queryObj) => {
   let queryStr = `INSERT INTO reviews (userId, roomId, text, date, accuracy, communication, cleanliness, location, checkIn, value) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`;
   try {
-    await db.query(queryStr, [queryObj.userId, queryObj.roomId, queryObj.text, queryObj.date, queryObj.accuracy, queryObj.communication, queryObj.cleanliness, queryObj.location, queryObj.checkIn, queryObj.value]);
+    await client.query(queryStr, [queryObj.userId, queryObj.roomId, queryObj.text, queryObj.date, queryObj.accuracy, queryObj.communication, queryObj.cleanliness, queryObj.location, queryObj.checkIn, queryObj.value]);
   } catch (err) {
     throw new Error(`post review error: ${err.message}`);
   }
@@ -60,7 +70,7 @@ const addReview = async (queryObj) => {
 const updateReview = async (queryObj) => {
   let queryStr = `UPDATE reviews SET text = $1, accuracy = $2, communication = $3, cleanliness = $4, location = $5, checkIn = $6, value = $7 WHERE id = $8`;
   try {
-    await db.query(queryStr, [queryObj.text, queryObj.accuracy, queryObj.communication, queryObj.cleanliness, queryObj.location, queryObj.checkIn, queryObj.value, queryObj.reviewId]);
+    await client.query(queryStr, [queryObj.text, queryObj.accuracy, queryObj.communication, queryObj.cleanliness, queryObj.location, queryObj.checkIn, queryObj.value, queryObj.reviewId]);
   } catch (err) {
     throw new Error(`update review error: ${err.message}`);
   }
@@ -69,14 +79,20 @@ const updateReview = async (queryObj) => {
 const deleteReview = async (queryObj) => {
   let queryStr = `DELETE FROM reviews where id = $1`;
   try {
-    await db.query(queryStr, [queryObj.reviewId]);
+    await client.query(queryStr, [queryObj.reviewId]);
   } catch (err) {
     throw new Error(`delete review error: ${err.message}`);
   }
 }
 
+module.exports.client = client;
 module.exports.queryRoomInfoByRoomId = queryRoomInfoByRoomId;
 module.exports.queryReviewsByRoomId = queryReviewsByRoomId;
 module.exports.addReview = addReview;
 module.exports.updateReview = updateReview;
 module.exports.deleteReview = deleteReview;
+
+if (!module.parent) {
+  client.end();
+  process.exit(-1);
+}
