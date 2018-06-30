@@ -1,6 +1,7 @@
 const express = require('express');
 const tempStorage = require('./tempStorage');
-const db = require('../database/index');
+// const db = require('../database/index');
+const db = require('../database/indexSDC');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ const getQueryParams = ({ pageonly, start, limit }) => {
 router.get('/:roomId', async (req, res, next) => {
   try {
     let { roomId } = req.params;
-    roomId = parseInt(roomId, 10) + roomIdAdjustment;
+    roomId = parseInt(roomId, 10);
     if (
       !parseInt(req.query.pageonly, 10)
       || !(tempStorage.roomInfo.id
@@ -40,46 +41,57 @@ router.get('/:roomId', async (req, res, next) => {
   }
 });
 
-// handle POST requests for /rooms
-router.post('/:roomId', async (req, res, next) => {
-  try {
-    let { roomId } = req.params;
-    roomId += roomIdAdjustment;
-    const queryObj = { roomId };
-    Object.assign(queryObj, req.body);
-    const reviews = db.queryReviewsByRoomId(queryObj);
-    tempStorage.allQueryReviews = await reviews;
-    tempStorage.totalNumberResults = tempStorage.allQueryReviews.length;
-    res.status(200).json(getQueryParams(req.query));
-  } catch (err) {
-    next(err);
-  }
-});
+
+// router.post('/:roomId', async (req, res, next) => {
+//   try {
+//     let { roomId } = req.params;
+//     roomId += roomIdAdjustment;
+//     const queryObj = { roomId };
+//     Object.assign(queryObj, req.body);
+//     const reviews = db.queryReviewsByRoomId(queryObj);
+//     tempStorage.allQueryReviews = await reviews;
+//     tempStorage.totalNumberResults = tempStorage.allQueryReviews.length;
+//     res.status(200).json(getQueryParams(req.query));
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 // Everything below this is ANOOP'S SDC MODIFICATIONS
-router.put('/:roomId', async (req, res, next) => {
+router.post('/:roomId', async (req, res, next) => {
   try {
-    let { roomId } = req.params;
+    console.log(req.params);
+    let roomId = parseInt(req.params.roomId);
     roomId += roomIdAdjustment;
-    const queryObj = { roomId };
+    let queryObj = { roomId };
     Object.assign(queryObj, req.body);
-    const variable1 = db['PUT METHOD NAME HERE'](queryObj);
-    await variable1;
-    res.status(200);
+    await db.addReview(queryObj);
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }
 });
 
-router.delete('/:roomId', async (req, res, next) => {
+
+router.put('/:roomId/:reviewId', async (req, res, next) => {
   try {
-    let { roomId } = req.params;
-    roomId += roomIdAdjustment;
-    const queryObj = { roomId };
+    let reviewId = req.params.reviewId;
+    const queryObj = { reviewId };
     Object.assign(queryObj, req.body);
-    const variable2 = db['DELETE METHOD NAME HERE'](queryObj);
-    await variable2;
-    res.status(200);
+    await db.updateReview(queryObj);
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete('/:roomId/:reviewId', async (req, res, next) => {
+  try {
+    let reviewId = req.params.reviewId;
+    const queryObj = { reviewId };
+    Object.assign(queryObj, req.body);
+    await db.deleteReview(queryObj);
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }

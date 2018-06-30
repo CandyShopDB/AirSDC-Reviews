@@ -10,38 +10,71 @@ const roomTotal = 10000000;
 
 // Populate rooms table CSV file
 const generateRoomsTable = () => {
-  const roomOuterLoopNum = roomTotal / 100;
   const roomsFile = fs.createWriteStream(path.join(__dirname, './dataPostgres/rooms.csv'));
   roomsFile.write('roomname,room_address,hostId,totalNumReviews,totalAccuracy,totalCommunication,totalCleanliness,totalLocation,totalCheckIn,totalValue\r\n');
-  for (let i = 0; i < roomOuterLoopNum; i++) {
-    let storageStr = '';
-    for (let j = 0; j < 100; j++) {
+  let i = 0;
+  const writeToRooms = () => {
+    let isWriteable = true;
+    do {
+      i++;
+      let storageStr = '';
+      if (i === 2500000) {
+        console.log('Quarter of the way there!');
+      } else if (i === 5000000) {
+        console.log('Halfway there!');
+      } else if (i === 7500000) {
+        console.log('3 Quarter there!');
+      }
       const roomname = `Private ${generateRandomInt(1, 5)} Bedroom ${faker.commerce.productAdjective()} House Available!`;
       const roomAddress = `${faker.address.streetAddress(true)}. ${faker.address.city()}. ${faker.address.stateAbbr()} ${faker.address.zipCode()}`;
       const hostId = generateRandomInt(1, roomTotal * 3);
-      storageStr += `${roomname},${roomAddress},${hostId},,,,,,,\r\n`;
+      const totalNumReviews = generateRandomInt(8, 12);
+      const totalAccuracy = generateRandomInt(1, 5);
+      const totalCommunication = generateRandomInt(1, 5);
+      const totalCleanliness = generateRandomInt(1, 5);
+      const totalLocation = generateRandomInt(1, 5);
+      const totalCheckIn = generateRandomInt(1, 5);
+      const totalValue = generateRandomInt(1, 5);
+      storageStr += `${roomname},${roomAddress},${hostId},${totalNumReviews},${totalAccuracy},${totalCommunication},${totalCleanliness},${totalLocation},${totalCheckIn},${totalValue}\r\n`;
+      if (i === roomTotal) {
+        roomsFile.write(storageStr);
+        console.timeEnd(`${roomTotal}_rooms`);
+      } else {
+        isWriteable = roomsFile.write(storageStr);
+      }
+    } while (i < roomTotal && isWriteable);
+    if (i < roomTotal) {
+      roomsFile.once('drain', writeToRooms);
     }
-    roomsFile.write(storageStr);
   }
+  writeToRooms();
 };
 console.time(`${roomTotal}_rooms`);
 generateRoomsTable();
-console.timeEnd(`${roomTotal}_rooms`);
 
 // Populate reviews table CSV file
 const generateReviewsTable = () => {
-  const reviewOuterLoopNum = roomTotal / 5;
+  const monthOptions = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   const reviewsFile = fs.createWriteStream(path.join(__dirname, './dataPostgres/reviews.csv'));
   reviewsFile.write('userId,roomId,text,date,accuracy,communication,cleanliness,location,checkIn,value\r\n');
-  let counter = 1;
-  for (let i = 0; i < reviewOuterLoopNum; i++) {
-    let storageStr = '';
-    for (let j = 0; j < 5; j++) {
-      for (let k = 0; k < generateRandomInt(8, 12); k++) {
+  let i = 0;
+  const writeToReviews = () => {
+    let isWriteable = true;
+    do {
+      i++;
+      let storageStr = '';
+      if (i === 2500000) {
+        console.log('Quarter of the way there!');
+      } else if (i === 5000000) {
+        console.log('Halfway there!');
+      } else if (i === 7500000) {
+        console.log('3 Quarter there!');
+      }
+      for (let j = 0; j < generateRandomInt(8, 12); j++) {
         const userId = generateRandomInt(1, roomTotal * 3);
-        const roomId = counter;
+        const roomId = i;
         const text = faker.lorem.paragraph();
-        const date = `${faker.date.month()} ${generateRandomInt(2008, 2018)}`;
+        const date = `${generateRandomInt(2008, 2018)}-${monthOptions[generateRandomInt(0, 11)]}-${generateRandomInt(1, 28)}`;
         const accuracy = generateRandomInt(1, 5);
         const communication = generateRandomInt(1, 5);
         const cleanliness = generateRandomInt(1, 5);
@@ -50,14 +83,22 @@ const generateReviewsTable = () => {
         const value = generateRandomInt(1, 5);
         storageStr += `${userId},${roomId},${text},${date},${accuracy},${communication},${cleanliness},${location},${checkIn},${value}\r\n`;
       }
-      counter += 1;
+      if (i === roomTotal) {
+        reviewsFile.write(storageStr);
+        console.timeEnd(`${roomTotal * 10}_reviews`);
+      } else {
+        isWriteable = reviewsFile.write(storageStr);
+      }
+    } while (i < roomTotal && isWriteable);
+    if (i < roomTotal) {
+      reviewsFile.once('drain', writeToReviews);
     }
-    reviewsFile.write(storageStr);
   }
+  writeToReviews();
 }
-console.time(`${roomTotal * 10}_reviews`);
-generateReviewsTable();
-console.timeEnd(`${roomTotal * 10}_reviews`);
+
+// console.time(`${roomTotal * 10}_reviews`);
+// generateReviewsTable();
 
 // Populate users table CSV file
 const generateUsersTable = () => {
@@ -74,9 +115,9 @@ const generateUsersTable = () => {
     usersFile.write(storageStr);
   }
 }
-console.time(`${roomTotal * 3}_users`);
-generateUsersTable();
-console.timeEnd(`${roomTotal * 3}_users`);
+// console.time(`${roomTotal * 3}_users`);
+// generateUsersTable();
+// console.timeEnd(`${roomTotal * 3}_users`);
 
 // Populate photos table CSV file
 const generatePhotosTable = () => {
@@ -95,9 +136,9 @@ const generatePhotosTable = () => {
     photosFile.write(storageStr);
   }
 }
-console.time(`${roomTotal * 2}_photos`);
-generatePhotosTable();
-console.timeEnd(`${roomTotal * 2}_photos`);
+// console.time(`${roomTotal * 2}_photos`);
+// generatePhotosTable();
+// console.timeEnd(`${roomTotal * 2}_photos`);
 
 // Populate reports table CSV file
 const generateReportsTable = () => {
@@ -116,7 +157,7 @@ const generateReportsTable = () => {
     reportsFile.write(storageStr);
   }
 }
-console.time(`${roomTotal * 0.5}_reports`);
-generateReportsTable();
-console.timeEnd(`${roomTotal * 0.5}_reports`);
+// console.time(`${roomTotal * 0.5}_reports`);
+// generateReportsTable();
+// console.timeEnd(`${roomTotal * 0.5}_reports`);
 
