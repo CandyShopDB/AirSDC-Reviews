@@ -42,7 +42,6 @@ router.get('/:roomId', async (req, res, next) => {
 
 router.post('/:roomId', async (req, res, next) => {
   try {
-    console.log(req.params);
     let roomId = parseInt(req.params.roomId);
     roomId += roomIdAdjustment;
     let queryObj = { roomId };

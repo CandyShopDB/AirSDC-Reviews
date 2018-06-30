@@ -5,7 +5,24 @@
       {
         "duration": 60,
         "arrivalRate": 1,
-        "name": "Warm up the application"
+        "name": "Warming up"
+      },
+      {
+        "duration": 120,
+        "arrivalRate": 1,
+        "rampTo": 10,
+        "name": "Ramp up"
+      },
+      {
+        "duration": 120,
+        "arrivalRate": 10,
+        "name": "Hold"
+      },
+      {
+        "duration": 120,
+        "arrivalRate": 10,
+        "rampTo": 1,
+        "name": "Ramp down"
       }
     ],
     "defaults": {
@@ -16,18 +33,69 @@
   },
   "scenarios": [
     {
+      "name": "Read reviews associated with a listing",
+      "weight": 10,
       "flow": [
         {
-          "loop": [
-            {
-              "get": {
-                "url": "/reviews/{{$randomNumber(1, 10000000)}}"
-              }
-            }
-          ]
+          "get": {
+            "url": "/reviews/{{$randomNumber(1, 10000000)}}"
+          }
         }
-      ],
-      "count": 100
+      ]
+    },
+    {
+      "name": "Add review associated with a listing",
+      "weight": 7,
+      "flow": [
+        {
+          "post": {
+            "url": "/reviews/{{$randomNumber(1, 10000000)}}",
+            "json": {
+              "userId": 999,
+              "roomId": 999,
+              "text": "Artillery added review, NEED TO DELETE",
+              "date": "2018-06-29",
+              "accuracy": 1,
+              "communication": 1,
+              "cleanliness": 1,
+              "location": 1,
+              "checkIn": 1,
+              "value": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update review associated with a listing",
+      "weight": 2,
+      "flow": [
+        {
+          "put": {
+            "url": "/reviews/{{$randomNumber(1, 10000000)}}/{{$randomNumber(1, 100000000)}}",
+            "json": {
+              "text": "Artillery updated review",
+              "accuracy": 5,
+              "communication": 5,
+              "cleanliness": 5,
+              "location": 5,
+              "checkIn": 5,
+              "value": 5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete review associated with a listing",
+      "weight": 1,
+      "flow": [
+        {
+          "delete": {
+            "url": "/reviews/{{$randomNumber(1, 10000000)}}/{{$randomNumber(1, 100000000)}}"
+          }
+        }
+      ]
     }
   ]
 }
