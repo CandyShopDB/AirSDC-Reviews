@@ -1,4 +1,4 @@
-// const newRelic = require('newrelic');
+const newRelic = require('newrelic');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -14,8 +14,6 @@ const app = express();
 
 // use body-parser to parse the request bodies
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // handle cors
 /* eslint-disable consistent-return */
 app.use((req, res, next) => {
