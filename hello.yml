@@ -4,6 +4,17 @@ config:
     - duration: 60
       arrivalRate: 1
       name: "Warm up the application"
+    - duration: 120
+      arrivalRate: 1
+      rampTo: 10
+      name: "jump to max load"
+    - duration: 120
+      arrivalRate: 10
+      name: "keep at the max load"
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 1
+      name: "calm down"
   defaults:
     headers:
       x-my-service-auth: '987401838271002188298567'
@@ -12,4 +23,6 @@ scenarios:
     - loop:
       - get:
           url: "/reviews/{{$randomNumber(1, 10000000)}}"
-    count: 100
+      - post:
+          url: "/reviews/"
+    count: 50
