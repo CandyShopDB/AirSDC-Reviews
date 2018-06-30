@@ -3,26 +3,58 @@ config:
   phases:
     - duration: 60
       arrivalRate: 1
-      name: "Warm up the application"
+      name: 'Warming up'
     - duration: 120
       arrivalRate: 1
       rampTo: 10
-      name: "jump to max load"
+      name: 'Ramp up'
     - duration: 120
       arrivalRate: 10
-      name: "keep at the max load"
-    - duration: 60
+      name: 'Hold'
+    - duration: 120
       arrivalRate: 10
       rampTo: 1
-      name: "calm down"
+      name: 'Ramp down'
   defaults:
     headers:
       x-my-service-auth: '987401838271002188298567'
 scenarios:
-  - flow:
-    - loop:
+  - name: "Read reviews associated with a listing"
+    weight: 10
+    flow:
       - get:
           url: "/reviews/{{$randomNumber(1, 10000000)}}"
+  - name: "Add review associated with a listing"
+    weight: 7
+    flow:
       - post:
-          url: "/reviews/"
-    count: 50
+          url: "/reviews/{{$randomNumber(1, 10000000)}}"
+          json:
+            userId: 999
+            roomId: 999
+            text: "Artillery added review, NEED TO DELETE"
+            date: "2018-06-29"
+            accuracy: 1
+            communication: 1
+            cleanliness: 1
+            location: 1
+            checkIn: 1
+            value: 1
+  - name: "Update review associated with a listing"
+    weight: 2
+    flow:
+      - put:
+          url: "/reviews/{{$randomNumber(1, 10000000)}}/{{$randomNumber(1, 100000000)}}"
+          json:
+            text: "Artillery updated review"
+            accuracy: 5
+            communication: 5
+            cleanliness: 5
+            location: 5
+            checkIn: 5
+            value: 5
+  - name: "Delete review associated with a listing"
+    weight: 1
+    flow:
+      - delete:
+          url: "/reviews/{{$randomNumber(1, 10000000)}}/{{$randomNumber(1, 100000000)}}"
