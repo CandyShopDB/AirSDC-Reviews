@@ -5,14 +5,14 @@ config:
       arrivalRate: 1
       name: 'Warming up'
     - duration: 120
-      arrivalRate: 1
-      rampTo: 50
+      arrivalRate: 2
+      rampTo: 30
       name: 'Ramp up'
     - duration: 120
-      arrivalRate: 50
+      arrivalRate: 10
       name: 'Hold'
     - duration: 120
-      arrivalRate: 50
+      arrivalRate: 1
       rampTo: 1
       name: 'Ramp down'
   defaults:

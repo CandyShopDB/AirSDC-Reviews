@@ -2,3 +2,4 @@ node_modules/
 database/dataCouch/
 database/dataPostgres/
 newrelicKey.js
+coverage/

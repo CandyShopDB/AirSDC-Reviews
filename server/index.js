@@ -43,19 +43,18 @@ app.use('/reviews', reviewsRoute);
 // handle error
 app.use((req, res, next) => {
   const error = new Error('Not found');
-  error.status = 404;
-  next(error);
+  res.status(404).json('Not Found');
 });
 
 /* eslint-disable no-unused-vars */
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    },
-  });
-});
+// app.use((error, req, res, next) => {
+//   res.status(error.status || 500);
+//   res.json({
+//     error: {
+//       message: error.message,
+//     },
+//   });
+// });
 /* eslint-enable no-unused-vars */
 
 // determine listening port

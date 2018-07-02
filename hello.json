@@ -9,8 +9,8 @@
       },
       {
         "duration": 120,
-        "arrivalRate": 1,
-        "rampTo": 10,
+        "arrivalRate": 2,
+        "rampTo": 30,
         "name": "Ramp up"
       },
       {
@@ -20,7 +20,7 @@
       },
       {
         "duration": 120,
-        "arrivalRate": 10,
+        "arrivalRate": 1,
         "rampTo": 1,
         "name": "Ramp down"
       }
