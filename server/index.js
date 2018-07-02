@@ -7,7 +7,8 @@ const path = require('path');
 const reviewsRoute = require('./reviews');
 
 
-const app = express();
+const app1 = express();
+const app2 = express();
 
 // use morgan to log incoming reuests
 // app.use(morgan('dev'));
@@ -58,13 +59,18 @@ app.use((req, res, next) => {
 /* eslint-enable no-unused-vars */
 
 // determine listening port
-const port = process.env.port || 3003;
-const server = http.createServer(app);
+const port1 = process.env.port1 || 3003;
+const port2 = process.env.port2 || 3013;
+const server1 = http.createServer(app1);
+const server2 = http.createServer(app2);
+
 
 module.exports = server;
 
 if (!module.parent) {
-  server.listen(port);
-  console.log(`reviews listening on ${port}`);
+  server1.listen(port1);
+  server2.listen(port2);
+  console.log(`reviews server 1 listening on ${port1}`);
+  console.log(`reviews server 2 listening on ${port2}`);
 }
 

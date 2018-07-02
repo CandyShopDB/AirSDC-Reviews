@@ -19,7 +19,7 @@
         "name": "Hold"
       },
       {
-        "duration": 120,
+        "duration": 60,
         "arrivalRate": 1,
         "rampTo": 1,
         "name": "Ramp down"
@@ -40,7 +40,7 @@
           "loop": [
             {
               "get": {
-                "url": "/reviews/{{$randomNumber(1, 10000000)}}"
+                "url": "/reviews/{{$randomNumber(1, 100000)}}"
               }
             }
           ]
@@ -58,7 +58,7 @@
           "loop": [
             {
               "post": {
-                "url": "/reviews/{{$randomNumber(1, 10000000)}}",
+                "url": "/reviews/{{$randomNumber(1, 100000)}}",
                 "json": {
                   "userId": 999,
                   "roomId": 999,
@@ -88,7 +88,7 @@
           "loop": [
             {
               "put": {
-                "url": "/reviews/999/{{$randomNumber(1, 100000000)}}",
+                "url": "/reviews/999/{{$randomNumber(1, 10000000)}}",
                 "json": {
                   "text": "Artillery updated review",
                   "accuracy": 5,
@@ -115,7 +115,7 @@
           "loop": [
             {
               "delete": {
-                "url": "/reviews/999/{{$randomNumber(1, 100000000)}}"
+                "url": "/reviews/999/{{$randomNumber(1, 1000000)}}"
               }
             }
           ]
