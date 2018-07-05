@@ -2,7 +2,11 @@
 
 import axios from 'axios';
 
-if (!global._babelPolyfill) require('babel-polyfill');
+/* eslint-disable no-underscore-dangle */
+if (!global._babelPolyfill) {
+  /* eslint-disable global-require */
+  require('babel-polyfill');
+}
 
 const roomUrl = '/reviews/';
 

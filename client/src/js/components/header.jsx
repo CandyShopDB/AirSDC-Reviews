@@ -122,7 +122,6 @@ class Header extends React.Component {
 Header.propTypes = {
   roomId: PropTypes.number.isRequired,
   roomTotalReviewNumber: PropTypes.number.isRequired,
-  overallRating: PropTypes.number.isRequired,
   numberReviewsPerPage: PropTypes.number.isRequired,
   queryInput: PropTypes.string.isRequired,
   querySortBy: PropTypes.arrayOf(PropTypes.any).isRequired,

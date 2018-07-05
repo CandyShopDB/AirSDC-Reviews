@@ -6,18 +6,17 @@ const http = require('http');
 const path = require('path');
 const reviewsRoute = require('./reviews');
 
-
 const app1 = express();
-const app2 = express();
 
 // use morgan to log incoming reuests
-// app.use(morgan('dev'));
+// app1.use(morgan('dev'));
 
 // use body-parser to parse the request bodies
-app.use(bodyParser.json());
+app1.use(bodyParser.json());
+
 // handle cors
 /* eslint-disable consistent-return */
-app.use((req, res, next) => {
+app1.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
@@ -32,17 +31,18 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 /* eslint-enable consistent-return */
 
 // serve up the pages
-app.use('/', express.static(path.join(__dirname, '../public')));
-app.get('/favicon.ico', (req, res) => res.status(204));
+app1.use('/', express.static(path.join(__dirname, '../public')));
+app1.get('/favicon.ico', (req, res) => res.status(204));
 
 // handle /reviews routes
-app.use('/reviews', reviewsRoute);
+app1.use('/reviews', reviewsRoute);
 
 // handle error
-app.use((req, res, next) => {
+app1.use((req, res, next) => {
   const error = new Error('Not found');
   res.status(404).json('Not Found');
 });
@@ -60,17 +60,12 @@ app.use((req, res, next) => {
 
 // determine listening port
 const port1 = process.env.port1 || 3003;
-const port2 = process.env.port2 || 3013;
+app1.set('host', '127.0.0.1');
 const server1 = http.createServer(app1);
-const server2 = http.createServer(app2);
 
-
-module.exports = server;
+module.exports = server1;
 
 if (!module.parent) {
-  server1.listen(port1);
-  server2.listen(port2);
-  console.log(`reviews server 1 listening on ${port1}`);
-  console.log(`reviews server 2 listening on ${port2}`);
+  server1.listen(port1, () => console.log(`reviews server 1 listening on ${port1}`));
 }
 

@@ -1,0 +1,59 @@
+config:
+  target: "http://127.0.0.1:3003"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: 'Warming up'
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+      name: 'Ramp up'
+    - duration: 120
+      arrivalRate: 50
+      name: 'Hold'
+    - duration: 120
+      arrivalRate: 50
+      rampTo: 1
+      name: 'Ramp down'
+  payload:
+    -
+      path: './fodder.csv'
+      fields:
+        - "roomUrl"
+        - "reviewId"
+  processor: './artilleryFunctions.js'
+  defaults:
+    headers:
+      x-my-service-auth: '987401838271002188298567'
+scenarios:
+  - name: "Read reviews associated with a listing"
+    weight: 10
+    flow:
+      - loop:
+        - get:
+            url: "{{roomUrl}}?pageonly=0&start=0&limit=7"
+      - count: 20
+  - name: "Add review associated with a listing"
+    weight: 7
+    flow:
+      - loop:
+        - post:
+            url: "{{roomUrl}}"
+            beforeRequest: "setJSONBodyPost"
+
+      - count: 20
+  - name: "Update review associated with a listing"
+    weight: 2
+    flow:
+      - loop:
+        - put:
+            url: "{{roomUrl}}/{{reviewId}}"
+            beforeRequest: "setJSONBodyPut"
+      - count: 20
+  - name: "Delete review associated with a listing"
+    weight: 1
+    flow:
+      - loop:
+        - delete:
+            url: "{{roomUrl}}/{{reviewId}}"
+      - count: 20

@@ -5,7 +5,10 @@ const tempStorage = require('./tempStorage');
 const db = require('../database/indexSDC');
 
 const router = express.Router();
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+  host: '54.215.217.86',
+  port: '6379',
+});
 
 redisClient.on('error', (err) => {
   console.log('Redis error: ', err);
@@ -39,7 +42,7 @@ router.get('/:roomId', async (req, res) => {
     } else if (
       !parseInt(req.query.pageonly, 10)
       || !(tempStorage.roomInfo.id
-      || tempStorage.roomInfo.id === roomId)
+        || tempStorage.roomInfo.id === roomId)
     ) {
       const info = db.queryRoomInfoByRoomId(roomId);
       const reviews = db.queryReviewsByRoomId({ roomId });
@@ -48,7 +51,7 @@ router.get('/:roomId', async (req, res) => {
       tempStorage.totalNumberResults = tempStorage.allQueryReviews.length;
       const result = getQueryParams(req.query);
       res.status(200).json(result);
-      redisClient.set(`room:${roomId}`, JSON.stringify(result), 'EX', 1800);
+      redisClient.set(`room:${roomId}`, JSON.stringify(result), 'EX', 60);
     } else {
       res.status(200).json(getQueryParams(req.query));
     }

@@ -4,8 +4,8 @@
   "description": "**Nappbnb**",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "jest --coverage",
-    "react-dev": "webpack -d --watch",
+    "test": "jest --coverage --verbose",
+    "react-dev": "webpack",
     "dev-server": "nodemon server/index.js",
     "start": "node server/index.js"
   },
@@ -15,6 +15,9 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "express-http-proxy": "^1.2.0",
+    "http-proxy": "^1.17.0",
+    "http-proxy-middleware": "^0.18.0",
     "moment": "^2.22.2",
     "morgan": "^1.9.0",
     "mysql": "^2.15.0",
