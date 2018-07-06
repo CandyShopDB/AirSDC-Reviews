@@ -15,28 +15,28 @@ CREATE TABLE reviews (
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS users CASCADE;
+-- DROP TABLE IF EXISTS users CASCADE;
 		
-CREATE TABLE users (
-  id SERIAL,
-  username VARCHAR(100),
-  avatar VARCHAR(100),
-  PRIMARY KEY (id)
-);
+-- CREATE TABLE users (
+--   id SERIAL,
+--   username VARCHAR(100),
+--   avatar VARCHAR(100),
+--   PRIMARY KEY (id)
+-- );
 
-DROP TABLE IF EXISTS rooms CASCADE;
+-- DROP TABLE IF EXISTS rooms CASCADE;
 		
-CREATE TABLE rooms (
-  id SERIAL,
-  roomname VARCHAR(300),
-  roomAddress VARCHAR(200),
-  hostId INT NOT NULL,
-  totalNumReviews INT,
-  totalAccuracy DECIMAL(10,5),
-  totalCommunication DECIMAL(10,5),
-  totalCleanliness DECIMAL(10,5),
-  totalLocation DECIMAL(10,5),
-  totalCheckIn DECIMAL(10,5),
-  totalValue DECIMAL(10,5),
-  PRIMARY KEY (id)
-);
+-- CREATE TABLE rooms (
+--   id SERIAL,
+--   roomname VARCHAR(300),
+--   roomAddress VARCHAR(200),
+--   hostId INT NOT NULL,
+--   totalNumReviews INT,
+--   totalAccuracy DECIMAL(10,5),
+--   totalCommunication DECIMAL(10,5),
+--   totalCleanliness DECIMAL(10,5),
+--   totalLocation DECIMAL(10,5),
+--   totalCheckIn DECIMAL(10,5),
+--   totalValue DECIMAL(10,5),
+--   PRIMARY KEY (id)
+-- );

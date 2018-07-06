@@ -9,7 +9,7 @@ const reviewsRoute = require('./reviews');
 const app1 = express();
 
 // use morgan to log incoming reuests
-// app1.use(morgan('dev'));
+app1.use(morgan('dev'));
 
 // use body-parser to parse the request bodies
 app1.use(bodyParser.json());
