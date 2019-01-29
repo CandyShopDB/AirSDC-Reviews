@@ -1,4 +1,4 @@
-// const newRelic = require('newrelic');
+const newRelic = require('newrelic');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -6,19 +6,17 @@ const http = require('http');
 const path = require('path');
 const reviewsRoute = require('./reviews');
 
-
-const app = express();
+const app1 = express();
 
 // use morgan to log incoming reuests
-// app.use(morgan('dev'));
+app1.use(morgan('dev'));
 
 // use body-parser to parse the request bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app1.use(bodyParser.json());
 
 // handle cors
 /* eslint-disable consistent-return */
-app.use((req, res, next) => {
+app1.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
@@ -33,41 +31,41 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 /* eslint-enable consistent-return */
 
 // serve up the pages
-app.use('/', express.static(path.join(__dirname, '../public')));
-app.get('/favicon.ico', (req, res) => res.status(204));
+app1.use('/', express.static(path.join(__dirname, '../public')));
+app1.get('/favicon.ico', (req, res) => res.status(204));
 
 // handle /reviews routes
-app.use('/reviews', reviewsRoute);
+app1.use('/reviews', reviewsRoute);
 
 // handle error
-app.use((req, res, next) => {
+app1.use((req, res, next) => {
   const error = new Error('Not found');
-  error.status = 404;
-  next(error);
+  res.status(404).json('Not Found');
 });
 
 /* eslint-disable no-unused-vars */
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    },
-  });
-});
+// app.use((error, req, res, next) => {
+//   res.status(error.status || 500);
+//   res.json({
+//     error: {
+//       message: error.message,
+//     },
+//   });
+// });
 /* eslint-enable no-unused-vars */
 
 // determine listening port
-const port = process.env.port || 3003;
-const server = http.createServer(app);
+const port1 = process.env.port1 || 3003;
+app1.set('host', '127.0.0.1');
+const server1 = http.createServer(app1);
 
-module.exports = server;
+module.exports = server1;
 
 if (!module.parent) {
-  server.listen(port);
-  console.log(`reviews listening on ${port}`);
+  server1.listen(port1, () => console.log(`reviews server 1 listening on ${port1}`));
 }
 

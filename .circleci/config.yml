@@ -3,7 +3,10 @@ jobs:
   build:
     docker:
       - image: circleci/node:8.11.1
-      - image: circleci/postgres:10.4
+      - image: circleci/postgres:10.4-ram
+        environment:
+          POSTGRES_USER: anoop
+          POSTGRES_DB: airbnb
     steps:
       - checkout
       - run: npm install

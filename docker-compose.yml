@@ -1,0 +1,27 @@
+version: '3'
+services:
+  moduleserver:
+    build: .
+    ports:
+      - "3003:3003"
+    depends_on:
+      - "redis"
+      - "postgres"
+    volumes:
+      - ".:/usr/app/"
+      - "/usr/app/node_modules"
+    environment:
+      POSTGRES_USER: "anoop"
+      POSTGRES_PASSWORD: "sdcproject"
+      POSTGRES_DB: "airbnb"
+  redis:
+    image: "redis:alpine"
+    command: "redis-server"
+    ports:
+      - "6379:6379"
+  postgres:
+    image: "postgres:alpine"
+    environment:
+      POSTGRES_USER: "anoop"
+      POSTGRES_PASSWORD: "sdcproject"
+      POSTGRES_DB: "airbnb"

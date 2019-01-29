@@ -8,6 +8,8 @@ import Reviews from './components/reviews';
 import configureStore from './store/configureStore';
 import sagas from './actions/sagas';
 
+// Room id property: Math.floor(Math.random() * 100) + 1000,
+
 const initialState = {
   queryInput: '',
   querySortBy: [],
@@ -15,7 +17,7 @@ const initialState = {
   roomIsFetching: false,
   pageHasErrored: false,
   pageIsFetching: false,
-  roomId: Math.floor(Math.random() * 100) + 1000,
+  roomId: Math.floor(Math.random() * 5000000) + 1,
   roomName: '',
   roomTotalReviewNumber: 0,
   overallRating: {

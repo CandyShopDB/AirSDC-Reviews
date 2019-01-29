@@ -1,22 +1,26 @@
-// const request = require('supertest');
 const request = require('request');
 const server = require('../server/index');
 const db = require('../database/indexSDC');
 const { Pool, Client } = require('pg');
 const config = require('../database/config');
 
-db.client.end();
+// db.pool.end();
+
+// const pool = new Pool(config);
 
 describe('Test the root endpoint', () => {
   let newClient;
   beforeEach(() => {
-    newClient = new Client(config);
-    newClient.connect()
-      .then(() => console.log('Connected to the PostgreSQL db'))
-      .catch(err => console.log(err));
+    // newClient = new Client(config);
+    // pool.connect()
+    //   .then((client) => {
+    //     newClient = client;
+    //     console.log('Connected to the PostgreSQL db')
+    //   })
+    //   .catch(err => console.log(err));
   });
   afterEach(() => {
-    newClient.end();
+    // newClient.release();
   });
   test('should serve up static html file on GET', (done) => {
     const options = {
@@ -38,13 +42,16 @@ describe('Test the root endpoint', () => {
 describe('Test the "/reviews/:roomId" GET route', () => {
   let newClient;
   beforeEach(() => {
-    newClient = new Client(config);
-    newClient.connect()
-      .then(() => console.log('Connected to the PostgreSQL db'))
-      .catch(err => console.log(err));
+    // newClient = new Client(config);
+    // pool.connect()
+      // .then((client) => {
+      //   newClient = client;
+      //   console.log('Connected to the PostgreSQL db');
+      // })
+      // .catch(err => console.log(err));
   });
   afterEach(() => {
-    newClient.end();
+    // newClient.release();
   });
   test('should respond with room / reviews data from top 10% DB (1)', (done) => {
     const options = {
@@ -174,20 +181,23 @@ describe('Test the "/reviews/:roomId" GET route', () => {
 });
 
 describe('Test the "/reviews/:roomId" POST route', () => {
-  let newClient;
+  // var newClient = 'hi!';
   beforeEach(() => {
-    newClient = new Client(config);
-    newClient.connect()
-      .then(() => console.log('Connected to the PostgreSQL db'))
-      .catch(err => console.log(err));
+    // pool.connect()
+    //   .then((client) => {
+    //     console.log(client);
+    //     newClient = client;
+    //     console.log('Connected to the PostgreSQL db');
+    //   })
+    //   .catch(err => console.log(err));
   });
   afterEach(() => {
-    newClient.query('DELETE FROM reviews WHERE id = (SELECT id FROM reviews ORDER BY id DESC LIMIT 1)')
-      .then(() => newClient.end())
-      .catch(err => console.error(err));
-    // newClient.end();
+    // newClient.query('DELETE FROM reviews WHERE id = (SELECT id FROM reviews ORDER BY id DESC LIMIT 1)')
+    //   .then(() => newClient.release())
+    //   .catch(err => console.error(err));
   });
   test('should successfully insert a review', (done) => {
+    // console.log(newClient);
     const options = {
       method: 'POST',
       uri: 'http://127.0.0.1:3003/reviews/5555555',
@@ -210,7 +220,7 @@ describe('Test the "/reviews/:roomId" POST route', () => {
         console.error(err);
       } else {
         expect(response.statusCode).toBe(201);
-        const review = await newClient.query('SELECT * FROM reviews ORDER BY id DESC LIMIT 1');
+        const review = await db.pool.query('SELECT * FROM reviews ORDER BY id DESC LIMIT 1');
         expect(review.rows[0].userid).toBe(options.body.userId);
         expect(review.rows[0].roomid).toBe(options.body.roomId);
         expect(review.rows[0].text).toBe(options.body.text);
@@ -227,19 +237,20 @@ describe('Test the "/reviews/:roomId" POST route', () => {
 });
 
 describe('Test the "/reviews/:roomId" PUT route', () => {
-  let newClient;
+  // let newClient;
   beforeEach(async () => {
-    newClient = new Client(config);
-    newClient.connect()
-      .then(() => console.log('Connected to the PostgreSQL db'))
-      .catch(err => console.log(err));
-    await newClient.query(`INSERT INTO reviews (id, userId, roomId, text, date, accuracy, communication, cleanliness, location, checkIn, value) Values (999999999, 999, 999, 'PLACEHOLDER TEXT TO UPDATE', '2018-08-08', 5, 5, 5, 5, 5, 5)`);
+    // pool.connect()
+    //   .then((client) => {
+    //     newClient = client;
+    //     console.log('Connected to the PostgreSQL db');
+    //   })
+    //   .catch(err => console.log(err));
+    await db.pool.query(`INSERT INTO reviews (id, userId, roomId, text, date, accuracy, communication, cleanliness, location, checkIn, value) Values (999999999, 999, 999, 'PLACEHOLDER TEXT TO UPDATE', '2018-08-08', 5, 5, 5, 5, 5, 5)`);
   });
   afterEach(() => {
-    newClient.query('DELETE FROM reviews WHERE id = 999999999')
-      .then(() => newClient.end())
+    db.pool.query('DELETE FROM reviews WHERE id = 999999999')
+      .then(() => null)
       .catch(err => console.log(err));
-    // newClient.end();
   });
   test('should successfully update a review', (done) => {
     const options = {
@@ -261,7 +272,7 @@ describe('Test the "/reviews/:roomId" PUT route', () => {
         console.error(err);
       } else {
         expect(response.statusCode).toBe(200);
-        const review = await newClient.query('SELECT * FROM reviews WHERE id = 999999999');
+        const review = await db.pool.query('SELECT * FROM reviews WHERE id = 999999999');
         expect(review.rows[0].text).toBe('JEST UPDATED TEXT');
         expect(review.rows[0].accuracy).toBe(1);
         expect(review.rows[0].communication).toBe(1);
@@ -278,14 +289,16 @@ describe('Test the "/reviews/:roomId" PUT route', () => {
 describe('Test the "/reviews/:roomId" DELETE route', () => {
   let newClient;
   beforeEach(async () => {
-    newClient = new Client(config);
-    newClient.connect()
-      .then(() => console.log('Connected to the PostgreSQL db'))
-      .catch(err => console.log(err));
-    await newClient.query(`INSERT INTO reviews (id, userId, roomId, text, date, accuracy, communication, cleanliness, location, checkIn, value) Values (999999999, 999, 999, 'PLACEHOLDER TEXT TO DELETE', '2018-08-08', 5, 5, 5, 5, 5, 5)`);
+    // pool.connect()
+    //   .then((client) => {
+    //     newClient = client;
+    //     console.log('Connected to the PostgreSQL db');
+    //   })
+    //   .catch(err => console.log(err));
+    await db.pool.query(`INSERT INTO reviews (id, userId, roomId, text, date, accuracy, communication, cleanliness, location, checkIn, value) Values (999999999, 999, 999, 'PLACEHOLDER TEXT TO DELETE', '2018-08-08', 5, 5, 5, 5, 5, 5)`);
   });
   afterEach(() => {
-    newClient.end();
+    // newClient.release();
   });
   test('should successfully delete a review', (done) => {
     const options = {
@@ -297,7 +310,7 @@ describe('Test the "/reviews/:roomId" DELETE route', () => {
         console.error(err);
       } else {
         expect(response.statusCode).toBe(200);
-        const review = await newClient.query('SELECT * FROM reviews WHERE id = 999999999');
+        const review = await db.pool.query('SELECT * FROM reviews WHERE id = 999999999');
         expect(review.rows).toHaveLength(0);
         done();
       }
@@ -306,15 +319,15 @@ describe('Test the "/reviews/:roomId" DELETE route', () => {
 });
 
 describe('Test the error handling of server', () => {
-  let newClient;
+  // let newClient;
   beforeEach(() => {
-    newClient = new Client(config);
-    newClient.connect()
-      .then(() => console.log('Connected to the PostgreSQL db'))
-      .catch(err => console.log(err));
+  //   newClient = new Client(config);
+  //   newClient.connect()
+  //     .then(() => console.log('Connected to the PostgreSQL db'))
+  //     .catch(err => console.log(err));
   });
-  afterEach(() => {
-    newClient.end();
+  afterAll(() => {
+    db.pool.end();
   });
   test('should respond with statusCode 404 when route not found', (done) => {
     const options = {
@@ -347,35 +360,3 @@ describe('Test the error handling of server', () => {
     })
   })
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-// xtest('should respond with statusCode 400 on bad request', () => {
-//   return request(app)
-//     .get('/restaurant/hello/menu')
-//     .expect(400, JSON.stringify('Bad request'))
-//     .expect('Content-Type', /json/)
-//     .catch(err => console.error(err));
-// });
-
-// xtest('should respond with statusCode 500 on internal server error', () => {
-//   db.retrieve = jest.fn((restaurantId, handleResponse) => {
-//     const fakeError = new Error('Error retrieving data from database');
-//     handleResponse(fakeError, null);
-//   });
-//   return request(app)
-//     .get('/restaurant/1001/menu')
-//     .expect(500, JSON.stringify('Unable to retrieve menu data from database'))
-//     .expect('Content-Type', /json/)
-//     .catch(err => console.error(err));
-// });

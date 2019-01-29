@@ -1,5 +1,5 @@
+const newRelicKey = require('./newrelicKey.js');
 'use strict'
-const newRelicKey = require('./newrelicKey');
 /**
  * New Relic agent configuration.
  *
@@ -10,7 +10,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Airbnb Reviews'],
+  app_name: ['Airbnb Reviews Deployed'],
   /**
    * Your New Relic license key.
    */

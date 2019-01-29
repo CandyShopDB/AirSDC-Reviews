@@ -1,0 +1,1 @@
+\COPY reviews (userid, roomid, text, date, accuracy, communication, cleanliness, location, checkin, value) FROM '/Users/anoop/desktop/anoop-reviews/database/dataPostgres/reviews.csv' (FORMAT csv, HEADER, DELIMITER ',');

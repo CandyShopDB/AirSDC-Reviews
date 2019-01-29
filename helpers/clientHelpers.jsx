@@ -241,11 +241,12 @@ export const makeStarElements = (
     hiddenHalfStarClass,
   },
 ) => {
-  const rate = normalizeRating(ratingRatio, fullStar, 0.5);
-  const numFullStar = Math.floor(rate);
-  const numHalfStar = (rate - numFullStar) > 0 ? 1 : 0;
+  // const rate = normalizeRating(ratingRatio, fullStar, 0.5);
+  // const numFullStar = Math.floor(rate);
+  const numFullStar = 4;
+  // const numHalfStar = (rate - numFullStar) > 0 ? 1 : 0;
+  const numHalfStar = 0;
   const numZeroStar = fullStar - numFullStar - numHalfStar;
-  console.log(numFullStar, numHalfStar, numZeroStar, '-------------------->');
   return (
     <span className={containerClass}>
       {
